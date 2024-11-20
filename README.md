@@ -1,5 +1,4 @@
-# tast-management-system
-# Система Управления Задачами
+# Tast-Management-System
 
 ## Описание
 
