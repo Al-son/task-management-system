@@ -1,0 +1,36 @@
+server:
+  servlet:
+    context-path: /api
+#    session:
+#      timeout: 30m  # 30 minutes
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.postgresql.Driver
+          format_sql: true
+    show-sql: true
+
+security:
+  jwt:
+    token:
+      secret-key: yourSuperLongSecretKeyThatIs256BitsLong
+      expire-length: 3600000  # 1 hour in milliseconds
+
+
+springdoc:
+  swagger-ui:
+    path: /doc
+#springdoc:
+#  swagger-ui:
+#    enabled: true
+#    path: /swagger-ui/index.html
+#  api-docs.path: /api-docs
