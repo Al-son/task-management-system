@@ -1,5 +1,6 @@
 package ru.taskmanagment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,21 +14,15 @@ import java.util.List;
 @Data
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = null;
 
-    @Column(name = "authority", unique = true, nullable = false)
+    @Column(name = "authority", nullable = false)
     private String authority;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     @Column(name = "users")
     private List<User> users;
-
-//    @CreationTimestamp
-//    private LocalDateTime createdAt;
-//
-//    @UpdateTimestamp
-//    private LocalDateTime updatedAt;
 
     public Role(String authority) {
         this.authority = authority;

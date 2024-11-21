@@ -48,7 +48,7 @@ public class UserService {
 
     public WebRs<List<UserRs>> getAllUsers() {
         List<UserRs> userResponses = userRepository.findAll().stream()
-                .map(user -> new UserRs(user.getId(), user.getName(), user.getEmail()))
+                .map(user -> new UserRs(user.getId(), user.getName(), user.getEmail(), user.getRoles()))
                 .collect(Collectors.toList());
 
         return new WebRs<>(HttpStatus.OK.value(), HttpStatus.OK.name(), userResponses);
@@ -102,11 +102,9 @@ public class UserService {
     }
 
     public WebRs<UserRs> profile(String email) throws UserNotFoundException {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (!optionalUser.isPresent()) {
-            throw new UserNotFoundException("Access token is not valid");
-        }
-        return new WebRs<>(optionalUser.get().toUserRs());
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Access token is not valid"));
+        return new WebRs<>(user.toUserRs());
     }
 
     public WebRs<Void> grantAsAdmin(GrantedRq grantedRq) {
@@ -126,7 +124,7 @@ public class UserService {
         user.getRoles().add(roleAdmin);
         userRepository.save(user);
 
-        return new WebRs<>();
+        return new WebRs<>("User granted admin privileges successfully");
     }
 
     public WebRs<Void> unGrantAsAdmin(GrantedRq grantedRq) {
@@ -143,7 +141,7 @@ public class UserService {
         user.getRoles().add(roleAdmin);
         userRepository.save(user);
 
-        return new WebRs<>();
+        return new WebRs<>("User has been removed from admin privileges successfully");
     }
 
     private void findExistingUserById(Long userId) {

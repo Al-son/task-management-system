@@ -12,6 +12,7 @@ import java.util.List;
 
 @Data
 public class TaskRq {
+    private Long userId;
     @NotNull(message = "Title cannot be null")
     @Size(min = 3, max = 255, message = "Title must be between 3 and 255 characters")
     private String title;
@@ -22,12 +23,14 @@ public class TaskRq {
     private Status status;
     @NotNull(message = "Priority cannot be null")
     private Priority priority;
-    private Long id;
-    private List<Comment> comments;
+
+
 
     public Task toTask(TaskRq taskRq) {
         Task task = new Task();
-        task.setId(taskRq.getId());
+        task.setUserId(taskRq.getUserId());
+        task.setPriority(taskRq.getPriority());
+        task.setStatus(taskRq.getStatus());
         task.setTitle(taskRq.getTitle());
         task.setDescription(taskRq.getDescription());
         return task;

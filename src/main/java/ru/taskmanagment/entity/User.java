@@ -26,9 +26,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
     @Column(name = "password")
     @JsonIgnore
@@ -38,7 +38,6 @@ public class User {
     @CreationTimestamp
     private LocalDateTime timeCreationToken;
     @Column(name = "resetToken")
-    //@UpdateTimestamp
     private String resetToken;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -68,8 +67,9 @@ public class User {
     public UserRs toUserRs() {
         return new UserRs(
                 this.id,
+                this.name,
                 this.email,
-                this.password
+                this.roles
         );
     }
 

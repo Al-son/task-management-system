@@ -1,5 +1,6 @@
 package ru.taskmanagment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +17,21 @@ public class Task {
     private Long id;
     @Column(name="user_id")
     private Long userId;
-    @Column(name = "title", nullable = false, unique = true)
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "description", nullable = false, unique = true)
+    @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "status", nullable = false, unique = true)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
-    @Column(name = "priority", nullable = false, unique = true)
+    @Column(name = "priority", nullable = false)
     @Enumerated(EnumType.STRING)
     private Priority priority;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "user_id", updatable = false, insertable = false)
     private User user;
+    @JsonIgnore
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
