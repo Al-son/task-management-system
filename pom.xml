@@ -11,7 +11,7 @@
 	<groupId>ru</groupId>
 	<artifactId>task-management-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>taskmanagment</name>
+	<name>app</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
