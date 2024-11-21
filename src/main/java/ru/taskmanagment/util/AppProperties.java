@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 public class AppProperties {
-    //@Value("${security.jwt.token.secret-key}")
     @Value("mflzkmfafoijafdomeboiafdafdmaruiaf")
     private String plainSecretKey;
     @Value("${security.jwt.token.expire-length}")

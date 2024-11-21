@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import ru.taskmanagment.payload.rs.UserAuth;
 import ru.taskmanagment.payload.rs.UserRs;
@@ -33,13 +35,15 @@ public class User {
     private String password;
     @Column(name = "timeCreationToken")
     @JsonIgnore
+    @CreationTimestamp
     private LocalDateTime timeCreationToken;
     @Column(name = "resetToken")
+    //@UpdateTimestamp
     private String resetToken;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Set<Role> roles = new HashSet<>();
@@ -52,10 +56,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-    }
-
-    public User(Long userId) {
-        this.id=userId;
     }
 
     public UserAuth toUserAuth() {
@@ -71,5 +71,9 @@ public class User {
                 this.email,
                 this.password
         );
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }

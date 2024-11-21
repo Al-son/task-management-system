@@ -2,6 +2,8 @@ package ru.taskmanagment.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,7 +27,6 @@ import ru.taskmanagment.util.Constant;
 import ru.taskmanagment.validation.ValidationUtil;
 
 
-import javax.management.relation.RoleNotFoundException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +43,8 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final ValidationUtil validationUtil;
     private final RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
 
     public WebRs<List<UserRs>> getAllUsers() {
         List<UserRs> userResponses = userRepository.findAll().stream()
@@ -57,34 +60,31 @@ public class UserService {
             throw new UserNotFoundException("Email is already registered");
         }
         String encodedPassword = passwordEncoder.encode(registerRq.getPassword());
-        RegisterRq encodePassword = new RegisterRq(
+        RegisterRq userRq = new RegisterRq(
                 registerRq.getName(),
                 registerRq.getEmail(),
                 encodedPassword
         );
-        User user = encodePassword.toUsers();
-//        Role userRole = roleRepository.findByName(Constant.ROLE_USER)
-//                .orElseThrow(() -> new CustomerRoleNotFoundException("Role not found"));
-        Optional<Role> userRole = roleRepository.findByName(Constant.ROLE_USER);
-        if (userRole.isEmpty()) {
-            System.out.println("Role not found in the database");
-            throw new CustomerRoleNotFoundException("Role not found");
+        User user = userRq.toUsers();
+        Optional<Role> optionalRole = roleRepository.findByAuthority(Constant.ROLE_USER);
+        if (optionalRole.isPresent()) {
+            user.getRoles().add(optionalRole.get());
         } else {
-            System.out.println("Role found: " + userRole.get().getName());
-            user.getRoles().add(userRole.get());
+            logger.error("Role with authority {} not found", Constant.ROLE_USER);
+            throw new CustomerRoleNotFoundException("Role " + Constant.ROLE_USER + " not found");
         }
         userRepository.save(user);
-        return generateAndAttempToken(registerRq.getEmail(), registerRq.getPassword());
+        return generateAndAttemptToken(registerRq.getEmail(), registerRq.getPassword());
     }
 
     public WebRs<List<RegisterLoginRs>> login(LoginRq loginRq) throws UserNotFoundException {
         if (!userRepository.findByEmail(loginRq.getEmail()).isPresent()) {
             throw new UserNotFoundException("Email address not registered");
         }
-        return generateAndAttempToken(loginRq.getEmail(), loginRq.getPassword());
+        return generateAndAttemptToken(loginRq.getEmail(), loginRq.getPassword());
     }
 
-    private WebRs<List<RegisterLoginRs>> generateAndAttempToken(String email, String password) throws UserNotFoundException {
+    private WebRs<List<RegisterLoginRs>> generateAndAttemptToken(String email, String password) throws UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("Email address not registered"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new UserNotFoundException("Email and password are incorrect");
@@ -114,14 +114,14 @@ public class UserService {
         findExistingUserById(grantedRq.getUserId());
         User user = userRepository.findById(grantedRq.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        Role roleAdmin = roleRepository.findByName(Constant.ROLE_ADMIN)
+        Role roleAdmin = roleRepository.findByAuthority(Constant.ROLE_ADMIN)
                 .orElseThrow(() -> new UserNotFoundException("Role not found"));
 
         if (user.getRoles().contains(roleAdmin)) {
             throw new UserNotFoundException("User is already an administrator");
         }
 
-        user.getRoles().remove(roleRepository.findByName(Constant.ROLE_USER)
+        user.getRoles().remove(roleRepository.findByAuthority(Constant.ROLE_USER)
                 .orElseThrow(() -> new UserNotFoundException("Role not found")));
         user.getRoles().add(roleAdmin);
         userRepository.save(user);
@@ -133,12 +133,12 @@ public class UserService {
         validationUtil.validate(grantedRq);
         findExistingUserById(grantedRq.getUserId());
         User user = userRepository.findById(grantedRq.getUserId()).orElseThrow(() -> new UserNotFoundException("User not found"));
-        Role roleAdmin = roleRepository.findByName(Constant.ROLE_ADMIN).orElseThrow(() -> new UserNotFoundException("Role not found"));
+        Role roleAdmin = roleRepository.findByAuthority(Constant.ROLE_ADMIN).orElseThrow(() -> new UserNotFoundException("Role not found"));
 
         if (!user.getRoles().contains(roleAdmin)) {
             throw new UserNotFoundException("User is not an administrator");
         }
-        user.getRoles().remove(roleRepository.findByName(Constant.ROLE_USER)
+        user.getRoles().remove(roleRepository.findByAuthority(Constant.ROLE_USER)
                 .orElseThrow(() -> new UserNotFoundException("Role not found")));
         user.getRoles().add(roleAdmin);
         userRepository.save(user);

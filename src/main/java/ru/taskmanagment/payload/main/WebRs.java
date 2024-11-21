@@ -21,8 +21,14 @@ public class WebRs<T> {
     }
 
     public WebRs(UserRs userRs) {
+        this.code = 200;
+        this.message = "Success";
+        this.data = (T) userRs;
     }
 
     public WebRs(String s) {
+        this.code = 200;
+        this.message = "Success";
+        this.data = (T) s;
     }
 }

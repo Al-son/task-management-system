@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public WebRs<List<RegisterLoginRs>> register(@RequestBody RegisterRq registerRq) throws RoleNotFoundException {
+    public WebRs<List<RegisterLoginRs>> register(@RequestBody RegisterRq registerRq) {
         return userService.register(registerRq);
     }
 
