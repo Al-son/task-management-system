@@ -10,6 +10,14 @@ public class CommentRs {
     private Long taskId;
     private String content;
 
+    public CommentRs() {
+
+    }
+    public CommentRs(Long id, String content) {
+        this.id = id;
+        this.content = content;
+    }
+
     public static CommentRs toCommentRs(Comment comment) {
         CommentRs commentRs = new CommentRs();
         commentRs.setId(commentRs.getId());
@@ -23,7 +31,5 @@ public class CommentRs {
         comment.setContent(getContent());
         return comment;
     }
-
-
 
 }

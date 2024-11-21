@@ -15,6 +15,10 @@ public class CommentRq {
         this.content = content;
     }
 
+    public CommentRq(String newComment) {
+        this.content = newComment;
+    }
+
     public Comment toComment(CommentRq commentRq) {
         Comment comment = new Comment();
         comment.setUserId(commentRq.getUserId());

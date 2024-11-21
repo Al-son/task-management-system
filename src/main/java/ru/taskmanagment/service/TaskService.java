@@ -44,7 +44,6 @@ public class TaskService {
         task.setDescription(taskRq.getDescription());
         task.setStatus(taskRq.getStatus());
         task.setPriority(taskRq.getPriority());
-        //task.setComments(taskRq.getComments());
         Task updatedTask = taskRepository.save(task);
         return TaskRs.toTaskRs(updatedTask);
     }

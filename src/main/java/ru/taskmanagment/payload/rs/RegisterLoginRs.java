@@ -1,7 +1,6 @@
 package ru.taskmanagment.payload.rs;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class RegisterLoginRs {

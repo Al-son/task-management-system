@@ -1,10 +1,8 @@
 package ru.taskmanagment.payload.rs;
 
 import lombok.Data;
-import lombok.Generated;
 import ru.taskmanagment.entity.Comment;
 import ru.taskmanagment.entity.Task;
-import ru.taskmanagment.entity.User;
 import ru.taskmanagment.enumClass.Priority;
 import ru.taskmanagment.enumClass.Status;
 

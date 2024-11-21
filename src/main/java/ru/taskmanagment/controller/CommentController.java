@@ -21,7 +21,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    @RolesAllowed({USER, ADMIN})
+    //@RolesAllowed({USER, ADMIN})
     public ResponseEntity<List<CommentRs>> getAllComments() {
         List<CommentRs> comments = commentService.getAllComments()
                 .stream()
@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    @RolesAllowed(ADMIN)
+    //@RolesAllowed(ADMIN)
     public ResponseEntity<CommentRs> getComment(@PathVariable Long id) {
         CommentRs commentRs = commentService.getCommentById(id);
         return ResponseEntity.ok(commentRs);

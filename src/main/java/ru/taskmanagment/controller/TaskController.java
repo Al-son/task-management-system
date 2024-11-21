@@ -11,7 +11,6 @@ import ru.taskmanagment.service.TaskService;
 import java.util.List;
 
 import static ru.taskmanagment.util.RoleLocal.ADMIN;
-import static ru.taskmanagment.util.RoleLocal.USER;
 
 @RestController
 @RequestMapping("/tasks")
@@ -21,7 +20,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    @RolesAllowed({USER,ADMIN})
+    //@RolesAllowed({USER,ADMIN})
     public ResponseEntity<List<TaskRs>> getAllTasks() {
         List<TaskRs> tasks = taskService.getAllTasks().stream()
                 .map(TaskRs::toTaskRs)
@@ -37,7 +36,7 @@ public class TaskController {
     }
 
     @PostMapping
-    @RolesAllowed({USER, ADMIN})
+    //@RolesAllowed({USER, ADMIN})
     public ResponseEntity<TaskRs> createTask(@RequestBody TaskRq taskRq) {
         TaskRs taskRs = taskService.createTask(taskRq);
         return ResponseEntity.status(201).body(taskRs);
