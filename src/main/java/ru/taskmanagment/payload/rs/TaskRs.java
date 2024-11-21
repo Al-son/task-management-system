@@ -5,6 +5,8 @@ import lombok.Generated;
 import ru.taskmanagment.entity.Comment;
 import ru.taskmanagment.entity.Task;
 import ru.taskmanagment.entity.User;
+import ru.taskmanagment.enumClass.Priority;
+import ru.taskmanagment.enumClass.Status;
 
 import java.util.List;
 
@@ -15,8 +17,8 @@ public class TaskRs {
     private String title;
     private Long userId;
     private String description;
-    private Task.Status status;
-    private Task.Priority priority;
+    private Status status;
+    private Priority priority;
     private List<Comment> comments;
 
     public static TaskRs toTaskRs(Task task) {

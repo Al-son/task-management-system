@@ -4,16 +4,19 @@ package ru.taskmanagment.payload.rs;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 public class UserAuth implements UserDetails {
     private String email;
     private String password;
-    // private List<String> roles;
+    private List<String> roles;
 
     public UserAuth(@NotBlank String email, @NotBlank String password) {
         this.email = email;
@@ -26,10 +29,6 @@ public class UserAuth implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        for (String role : roles) {
-//            authorities.add(new SimpleGrantedAuthority(role));
-//        }
         return Collections.emptyList();
     }
 

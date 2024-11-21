@@ -3,12 +3,10 @@ package ru.taskmanagment.payload.rq;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import ru.taskmanagment.entity.Comment;
 import ru.taskmanagment.entity.Task;
-import ru.taskmanagment.entity.Task.Status;
-import ru.taskmanagment.entity.Task.Priority;
+import ru.taskmanagment.enumClass.Priority;
+import ru.taskmanagment.enumClass.Status;
 
-import java.util.List;
 
 @Data
 public class TaskRq {

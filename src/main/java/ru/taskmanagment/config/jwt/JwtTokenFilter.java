@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,8 +63,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private UserDetails getUserDetails(String token) {
         Claims claims = jwtTokenUtil.parseClaims(token);
         String subject = claims.getSubject();
-//        String textRoles = (String) claims.get("roles");
-//        String[] roles = textRoles.split(", ");
+        String textRoles = (String) claims.get("roles");
+        String[] roles = textRoles.split(", ");
         if (subject == null || subject.isEmpty()) {
             throw new IllegalStateException("JWT token does not contain a valid subject");
         }

@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 import ru.taskmanagment.payload.rs.UserAuth;
 import ru.taskmanagment.payload.rs.UserRs;

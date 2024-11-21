@@ -7,8 +7,6 @@ import ru.taskmanagment.exception.CommentNotFoundException;
 import ru.taskmanagment.payload.rq.CommentRq;
 import ru.taskmanagment.payload.rs.CommentRs;
 import ru.taskmanagment.repository.CommentRepository;
-import ru.taskmanagment.repository.TaskRepository;
-import ru.taskmanagment.repository.UserRepository;
 
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final TaskRepository taskRepository;
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();

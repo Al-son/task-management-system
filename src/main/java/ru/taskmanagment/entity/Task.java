@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import ru.taskmanagment.enumClass.Priority;
+import ru.taskmanagment.enumClass.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +37,4 @@ public class Task {
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    public enum Status {
-        PENDING, IN_PROGRESS, COMPLETED
-    }
-
-    public enum Priority {
-        HIGH, MEDIUM, LOW
-    }
 }
