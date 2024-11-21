@@ -1,7 +1,9 @@
 package ru.taskmanagment.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.taskmanagment.payload.main.WebRs;
 import ru.taskmanagment.payload.rq.*;
@@ -9,8 +11,10 @@ import ru.taskmanagment.payload.rs.RegisterLoginRs;
 import ru.taskmanagment.payload.rs.UserRs;
 import ru.taskmanagment.service.UserService;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.List;
+
+import static ru.taskmanagment.util.RoleLocal.ADMIN;
+import static ru.taskmanagment.util.RoleLocal.USER;
 
 @RestController
 @RequestMapping("/auth")
