@@ -31,4 +31,8 @@ public class WebRs<T> {
         this.message = "Success";
         this.data = (T) s;
     }
+
+    public T getName() {
+        return this.data;
+    }
 }

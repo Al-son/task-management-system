@@ -56,6 +56,11 @@ public class User {
         this.password = password;
     }
 
+    public User(long l, String name) {
+        this.id = l;
+        this.name = name;
+    }
+
     public UserAuth toUserAuth() {
         return new UserAuth(
                 this.email,

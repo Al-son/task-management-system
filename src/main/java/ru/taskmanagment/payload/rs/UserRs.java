@@ -18,4 +18,7 @@ public class UserRs {
         this.email = email;
         this.roles = roles;
     }
+
+    public UserRs() {
+    }
 }

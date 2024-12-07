@@ -54,6 +54,12 @@ public class UserService {
         return new WebRs<>(HttpStatus.OK.value(), HttpStatus.OK.name(), userResponses);
     }
 
+    public WebRs<UserRs> findById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        return new WebRs<>(String.valueOf(user));
+    }
+
     public WebRs<List<RegisterLoginRs>> register(RegisterRq registerRq) throws CustomerRoleNotFoundException {
         validationUtil.validate(registerRq);
         if (userRepository.findByEmail(registerRq.getEmail()).isPresent()) {

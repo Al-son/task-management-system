@@ -35,3 +35,20 @@ springdoc:
 #    enabled: true
 #    path: /swagger-ui/index.html
 #  api-docs.path: /api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+      path-mapping:
+        prometheus: /prometheus
+
+  endpoint:
+    prometheus:
+      enabled: true
+
+  metrics:
+    export:
+      prometheus:
+        enabled: true
