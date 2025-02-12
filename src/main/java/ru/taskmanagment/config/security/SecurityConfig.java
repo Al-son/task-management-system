@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 import ru.taskmanagment.config.jwt.JwtTokenFilter;
 import ru.taskmanagment.repository.UserRepository;
 
@@ -78,5 +79,10 @@ public class SecurityConfig {
                 throw new UsernameNotFoundException("User email " + email + " not found");
             }
         };
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }

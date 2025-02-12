@@ -52,3 +52,8 @@ management:
     export:
       prometheus:
         enabled: true
+
+
+git:
+  default:
+    branch=feature:
