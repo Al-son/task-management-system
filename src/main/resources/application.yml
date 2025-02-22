@@ -20,6 +20,18 @@ spring:
           format_sql: true
     show-sql: true
 
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: admin@example.com
+    password: your-email-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 security:
   jwt:
     token:

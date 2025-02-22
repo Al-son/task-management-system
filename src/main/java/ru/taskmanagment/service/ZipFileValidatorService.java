@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.tika.Tika;
+//import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +27,8 @@ public class ZipFileValidatorService {
     private static final List<String> FILE_EXTENSIONS = List.of(".txt", ".md");
     private static final long MAX_ZIP_SIZE = 10 * 1024 * 1024; // 10 MB
     private final GitBranchService gitBranchService;
+    private final AdminNotificationService adminNotificationService; // Inject the notification service
+
 
     /**
      * Validates a ZIP file and pushes it to the appropriate branch in the remote repository.
@@ -79,7 +81,7 @@ public class ZipFileValidatorService {
             // Log the current branch
             log.info("Detected current branch: {}", currentBranch);
 
-            // Push to the appropriate branch based on validation results
+            //Push to the appropriate branch based on validation results
             String remoteUrl = "https://gitlab.com/backend2391702/testapplication.git";
             gitBranchService.pushToCorrectBranch(remoteUrl,
                     gitCloneDir,
@@ -87,7 +89,8 @@ public class ZipFileValidatorService {
                     projectRootDir,
                     validationErrors,
                     currentBranch);
-
+            // Notify the admin about the file upload
+            //adminNotificationService.notifyAdmin(file.getOriginalFilename());
             return validationErrors;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -161,23 +164,23 @@ public class ZipFileValidatorService {
         }
     }
 
-    private void validateFileTypes(Path tempDir) throws IOException {
-        Tika tika = new Tika();
-        Files.walk(tempDir)
-                .filter(path -> !Files.isDirectory(path))
-                .forEach(path -> {
-                    try {
-                        String detectedType = tika.detect(path);
-                        String expectedType = getExpectedMimeType(path.toString());
-                        if (!detectedType.equals(expectedType)) {
-                            log.warn("Mismatched file type: {} (expected: {}, detected: {})",
-                                    path, expectedType, detectedType);
-                        }
-                    } catch (IOException e) {
-                        log.error("Failed to detect file type: {}", path, e);
-                    }
-                });
-    }
+//    private void validateFileTypes(Path tempDir) throws IOException {
+//        Tika tika = new Tika();
+//        Files.walk(tempDir)
+//                .filter(path -> !Files.isDirectory(path))
+//                .forEach(path -> {
+//                    try {
+//                        String detectedType = tika.detect(path);
+//                        String expectedType = getExpectedMimeType(path.toString());
+//                        if (!detectedType.equals(expectedType)) {
+//                            log.warn("Mismatched file type: {} (expected: {}, detected: {})",
+//                                    path, expectedType, detectedType);
+//                        }
+//                    } catch (IOException e) {
+//                        log.error("Failed to detect file type: {}", path, e);
+//                    }
+//                });
+//    }
 
     private void validateFileNames(Path tempDir) throws IOException {
         Files.walk(tempDir)
