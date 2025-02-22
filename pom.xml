@@ -28,15 +28,18 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.target>17</maven.compiler.target>
 		<jwt.version>0.12.0</jwt.version>
 		<kotlin.version>1.8.22</kotlin.version>
 		<google.oauth.client.version>1.36.0</google.oauth.client.version> <!-- Fixed the typo -->
 		<springdoc-openapi.version>2.2.0</springdoc-openapi.version>
+		<spring-boot.version>3.3.5</spring-boot.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -63,9 +66,56 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>6.8.0.202311291450-r</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.55</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.23.0</version>
+		</dependency>
+		<!-- Using Websocket-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		<!-- Using Webflux-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<!-- JSON Processing (si nécessaire pour manipuler des fichiers JSON) -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<!-- Security (facultatif, pour des vérifications de sécurité supplémentaires) -->
+		<dependency>
+			<groupId>org.owasp</groupId>
+			<artifactId>dependency-check-core</artifactId>
+			<version>8.4.0</version> <!-- Version recommandée -->
+		</dependency>
+<!--		&lt;!&ndash; Apache Tika (facultatif, pour la détection des types MIME) &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.tika</groupId>-->
+<!--			<artifactId>tika-core</artifactId>-->
+<!--			<version>2.8.0</version> &lt;!&ndash; Version recommandée &ndash;&gt;-->
+<!--		</dependency>-->
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.30</version> <!-- Latest version as of now -->
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -116,6 +166,13 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.10.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
@@ -128,6 +185,15 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version> <!-- Utilisez la dernière version stable -->
+				<configuration>
+					<source>17</source>
+					<target>17</target>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -139,7 +205,34 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- JaCoCo Plugin -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+<!--						<phase>test</phase>-->
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
+	<repositories>
+		<repository>
+			<id>jacoco-repo</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+	</repositories>
 </project>

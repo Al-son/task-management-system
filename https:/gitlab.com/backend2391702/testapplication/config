@@ -1,0 +1,3 @@
+[remote "origin"]
+	url = https://gitlab.com/backend2391702/testapplication.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
